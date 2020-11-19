@@ -11,15 +11,21 @@ public final class App {
 
     public static void main(String[] args) {
     	try {
-    		// get class with primitive fields 
-    		Class aClass = Class.forName("reflective.serialization1.ObjectA");
-    		Object obj = aClass.newInstance();
+    		// get object with primitive fields 
+    		 ObjectA objA = new ObjectA();
+    		
+    		// get circularly referenced object
+//    		ObjectB objB = new ObjectB();
+//    		ObjectB objB2 = new ObjectB();
+//    		objB2.setObj(objB);
+//    		objB.setObj(objB2);
     		
     		// write serialized object to file 
     		FileWriter fw = new FileWriter("ObjectA.json");
-			fw.write(singleLineString(obj));
+    		//FileWriter fw = new FileWriter("ObjectB.json");
+			fw.write(singleLineString(objA));
 			fw.close();
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IOException e) {
+		} catch (IOException | SecurityException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
     }

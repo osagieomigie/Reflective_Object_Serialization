@@ -39,7 +39,22 @@ public class Serializer {
             
         	field_info.add("name", f.getName()); // field name 
         	field_info.add("declaringClass", fieldDeclareClass.getName()); // field declaring class name 
-        	field_info.add("value", field_obj.toString());
+        	
+        	// determine field type 
+        	if (f.getType().isPrimitive()) {
+        		field_info.add("value", field_obj.toString()); // primitive field 
+        	}else {// object field 
+        		if (field_obj == null) {
+        			field_info.add("reference", "null"); // null object
+        		}else {
+        			if (!object_tracking_map.containsKey(field_obj)) { // add new object to tracking list 
+        				field_info.add("reference", Integer.toString(object_tracking_map.size()));
+        				serializeHelper(field_obj, object_list, object_tracking_map);
+        			}else {
+        				field_info.add("reference", object_tracking_map.get(field_obj).toString());
+        			}
+        		}
+        	}
         	
         	field_list.add(field_info);
         }

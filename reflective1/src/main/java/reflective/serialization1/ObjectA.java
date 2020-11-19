@@ -10,4 +10,26 @@ public class ObjectA {
 		y = 3;
 		z = 1.0; 
 	}
+	
+	ObjectA(int x, int y, double z){
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+	
+	void setX(int x) {
+		this.x = x;
+	}
+	
+	void setY(int y) {
+		this.y = y;
+	}
+	
+	void setZ(double z) {
+		this.z = z;
+	}
+	
+	public String toString() {
+        return "ObjectA";
+    }
 }
