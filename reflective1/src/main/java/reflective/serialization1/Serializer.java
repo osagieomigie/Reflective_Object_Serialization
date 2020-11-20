@@ -27,9 +27,21 @@ public class Serializer {
         object_info.add("class", object_class.getName());
         object_info.add("id", object_id);   // stops at object id   
         
+        Field [] requirededFields = null;
+        
+        // Determine the fields we need to explore 
+        if (!source.getClass().getSuperclass().getName().equals("java.util.AbstractList")) {
+        	requirededFields = object_class.getDeclaredFields();
+        }else {
+        	requirededFields = new Field[3];
+        	requirededFields[0] = object_class.getDeclaredField("elementData");
+        	requirededFields[1] = object_class.getDeclaredField("size");
+        	requirededFields[2] = object_class.getSuperclass().getDeclaredField("modCount");
+        }
+        
         // list of fields 
         JsonArrayBuilder field_list = Json.createArrayBuilder();
-        for (Field f : object_class.getDeclaredFields()) {
+        for (Field f : requirededFields) {
         	f.setAccessible(true);
         	
         	// list of field info
@@ -55,8 +67,10 @@ public class Serializer {
         			String array_id = Integer.toString(object_tracking_map.size());
         	        object_tracking_map.put(field_obj, array_id);
         	        field_info.add("reference", array_id);
-        			serializeArray(field_obj.getClass(), array_id, field_obj, object_list, object_tracking_map);
-        		}else {
+        	        serializeArray(field_obj.getClass(), array_id, field_obj, object_list, object_tracking_map);
+        		}
+        		// Field is an Object 
+        		else {
         			if (!object_tracking_map.containsKey(field_obj)) { // add new object to tracking list 
         				field_info.add("reference", Integer.toString(object_tracking_map.size()));
         				serializeHelper(field_obj, object_list, object_tracking_map);
@@ -83,7 +97,7 @@ public class Serializer {
         object_info.add("class", object_class.getName());
         object_info.add("id", object_id);   // stops at object id   
         object_info.add("type", "array"); // add type
-        
+
     	// add array length
     	int arrLength = Array.getLength(obj);
     	object_info.add("length", String.valueOf(arrLength));
@@ -120,5 +134,4 @@ public class Serializer {
         object_info.add("entries", array_list);
         object_list.add(object_info);
     }
-
 }
