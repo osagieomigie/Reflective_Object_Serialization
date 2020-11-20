@@ -17,7 +17,7 @@ public final class App {
     public static void main(String[] args) {
     	try {
     		// get object with primitive fields 
-//    		 ObjectA objA = new ObjectA();
+    		 ObjectA objA = new ObjectA();
     		
     		// get circularly referenced object
 //    		ObjectB objB = new ObjectB();
@@ -26,13 +26,17 @@ public final class App {
 //    		objB.setObj(objB2);
     		
     		// get object that contains an array of primitives  
-    		ObjectC objC = new ObjectC();
+//    		ObjectC objC = new ObjectC();
+    		
+    		// get Object that contains references to other Objects
+    		ObjectD objD = new ObjectD();
+    		objD.setArrayIndex(3, objA);
     		
     		// write serialized object to file 
-    		FileWriter fw = new FileWriter("ObjectC.json");
+    		FileWriter fw = new FileWriter("ObjectD.json");
 
 			//fw.write(singleLineString(objA));prettifyString
-			fw.write(prettifyString(objC));
+			fw.write(prettifyString(objD));
 			fw.close();
 		} catch (IOException | SecurityException | IllegalArgumentException e) {
 			e.printStackTrace();

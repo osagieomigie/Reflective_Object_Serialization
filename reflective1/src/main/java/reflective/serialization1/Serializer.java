@@ -55,7 +55,7 @@ public class Serializer {
         			String array_id = Integer.toString(object_tracking_map.size());
         	        object_tracking_map.put(field_obj, array_id);
         	        field_info.add("reference", array_id);
-        			inspectArray(field_obj.getClass(), array_id, field_obj, object_list, object_tracking_map);
+        			serializeArray(field_obj.getClass(), array_id, field_obj, object_list, object_tracking_map);
         		}else {
         			if (!object_tracking_map.containsKey(field_obj)) { // add new object to tracking list 
         				field_info.add("reference", Integer.toString(object_tracking_map.size()));
@@ -75,7 +75,7 @@ public class Serializer {
         object_list.add(object_info);
     }
     
-    private static void inspectArray(Class<?> c, String object_id, Object obj, JsonArrayBuilder object_list, Map object_tracking_map) {
+    private static void serializeArray(Class<?> c, String object_id, Object obj, JsonArrayBuilder object_list, Map object_tracking_map) {
     	
         Class object_class = obj.getClass();
         JsonObjectBuilder object_info = Json.createObjectBuilder();
