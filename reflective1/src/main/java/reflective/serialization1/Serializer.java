@@ -2,7 +2,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.*;
 import javax.json.*;
 
 public class Serializer {
