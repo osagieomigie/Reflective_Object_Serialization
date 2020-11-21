@@ -25,23 +25,23 @@ public class Serializer {
         JsonObjectBuilder object_info = Json.createObjectBuilder();
         
         object_info.add("class", object_class.getName());
-        object_info.add("id", object_id);   // stops at object id   
+        object_info.add("id", object_id);
         
-        Field [] requirededFields = null;
+        Field [] requiredFields = null;
         
         // Determine the fields we need to explore 
         if (!source.getClass().getSuperclass().getName().equals("java.util.AbstractList")) {
-        	requirededFields = object_class.getDeclaredFields();
+        	requiredFields = object_class.getDeclaredFields();
         }else {
-        	requirededFields = new Field[3];
-        	requirededFields[0] = object_class.getDeclaredField("elementData");
-        	requirededFields[1] = object_class.getDeclaredField("size");
-        	requirededFields[2] = object_class.getSuperclass().getDeclaredField("modCount");
+        	requiredFields = new Field[3];
+        	requiredFields[0] = object_class.getDeclaredField("elementData");
+        	requiredFields[1] = object_class.getDeclaredField("size");
+        	requiredFields[2] = object_class.getSuperclass().getDeclaredField("modCount");
         }
         
         // list of fields 
         JsonArrayBuilder field_list = Json.createArrayBuilder();
-        for (Field f : requirededFields) {
+        for (Field f : requiredFields) {
         	f.setAccessible(true);
         	
         	// list of field info

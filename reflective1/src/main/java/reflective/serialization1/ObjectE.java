@@ -3,7 +3,7 @@ package reflective.serialization1;
 import java.util.ArrayList;
 
 public class ObjectE {
-private ArrayList<ObjectA> b = new ArrayList<>(5);
+private ArrayList<ObjectA> b = new ArrayList<>(3);
 	
 	ObjectE() {
 		for(int i =0; i<3; i++) {
