@@ -1,13 +1,18 @@
 package reflective.serialization1;
 
+import serialization.Deserializer;
+import serialization.Serializer;
+
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.*;
 import java.util.*;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
@@ -36,11 +41,27 @@ public final class App {
     		ObjectE objE = new ObjectE();
      		objE.setArrayListIndex(0, objA);
     		// write serialized object to file 
-    		FileWriter fw = new FileWriter("ObjectE.json");
+    		FileWriter fw = new FileWriter("ObjectA.json");
 
 //			fw.write(singleLineString(objE));
-			fw.write(prettifyString(objE));
+			fw.write(prettifyString(objA));
 			fw.close();
+			
+			Visualizer visualizer = new Visualizer();
+			String json_string = singleLineString(objA);
+			
+			JsonReader json_reader = Json.createReader(new StringReader(json_string));
+			JsonObject json_object = json_reader.readObject();
+			
+			Object obj = null;
+			try {
+				obj = Deserializer.deserializeObject(json_object);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			visualizer.inspect(obj, true);
+			
 		} catch (IOException | SecurityException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
@@ -54,7 +75,7 @@ public final class App {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(json_object.toString());
+//		System.out.println(json_object.toString());
 		return json_object.toString();
 	}
     

@@ -59,7 +59,10 @@ public class Deserializer {
     			
     			// primitive 
     			if (f.getType().isPrimitive()) {
-    				f.set(object_instance, Integer.valueOf(field_info.getString("value")));
+    				if (f.getType().equals(int.class))
+    					f.set(object_instance, Integer.valueOf(field_info.getString("value")));
+    				else if (f.getType().equals(double.class))
+    					f.set(object_instance, Double.valueOf(field_info.getString("value")));
     			}
     			// object 
     			else {
