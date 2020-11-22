@@ -1,20 +1,12 @@
 package reflective.serialization1;
 
-import serialization.Deserializer;
-import serialization.Serializer;
+import serialization.*;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 import java.lang.reflect.*;
 import java.util.*;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonWriter;
-import javax.json.JsonWriterFactory;
+import javax.json.*;
 import javax.json.stream.JsonGenerator;
 
 public final class App {
@@ -33,6 +25,7 @@ public final class App {
     		
     		// get object that contains an array of primitives  
     		ObjectC objC = new ObjectC();
+    		objC.setArrayIndex(3, 10);
     		
     		// get Object that contains an array with references to other Objects
     		ObjectD objD = new ObjectD();
