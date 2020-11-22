@@ -35,14 +35,14 @@ public final class App {
     		ObjectE objE = new ObjectE();
      		objE.setArrayListIndex(0, objA);
     		// write serialized object to file 
-    		FileWriter fw = new FileWriter("ObjectB.json");
+    		FileWriter fw = new FileWriter("ObjectD.json");
 
 //			fw.write(singleLineString(objE));
-			fw.write(prettifyString(objB));
+			fw.write(prettifyString(objD));
 			fw.close();
 			
 			Visualizer visualizer = new Visualizer();
-			String json_string = singleLineString(objB);
+			String json_string = singleLineString(objD);
 			
 			JsonReader json_reader = Json.createReader(new StringReader(json_string));
 			JsonObject json_object = json_reader.readObject();

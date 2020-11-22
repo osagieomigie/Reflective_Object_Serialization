@@ -26,8 +26,8 @@ public class Deserializer {
             Class object_class = Class.forName(object_info.getString("class"));
             Object object_instance = null;
             
-            // element is an array of integers
-            if (object_info.getString("type").equals("array") && object_info.getString("class").equals("[I")) {
+            // element is an array
+            if (object_info.getString("type").equals("array")) {
             	int [] arrayLength = {Integer.valueOf(object_info.getString("length"))};
             	object_instance = Array.newInstance(object_class.getComponentType(), arrayLength);
             }else {
@@ -57,8 +57,18 @@ public class Deserializer {
         		
         		for (int j = 0; j < object_entries.size(); j++) {
         			JsonObject array_entry = object_entries.getJsonObject(j);
-        			// primitive array
-        			Array.setInt(object_instance, j, Integer.valueOf(array_entry.getString("value")));
+        			
+        			// Entry either a null value, or a primitive type
+        			if (array_entry.containsKey("value")) {
+        				if (array_entry.getString("value").equals("null")) {
+        					Array.set(object_instance, j, null);
+        				}else { // primitive element
+        					Array.setInt(object_instance, j, Integer.valueOf(array_entry.getString("value")));
+        				}
+        			}
+        			else { // entry an object
+        				Array.set(object_instance, j, object_tracking_map.get(array_entry.getString("reference")));
+        			}
         		}
     		}else {
     			// get fields 
