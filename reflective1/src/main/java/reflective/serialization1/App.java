@@ -27,6 +27,7 @@ public final class App {
     		// get circularly referenced object
     		ObjectB objB = new ObjectB();
     		ObjectB objB2 = new ObjectB();
+    		objB2.setX(20);
     		objB2.setObj(objB);
     		objB.setObj(objB2);
     		
@@ -41,14 +42,14 @@ public final class App {
     		ObjectE objE = new ObjectE();
      		objE.setArrayListIndex(0, objA);
     		// write serialized object to file 
-    		FileWriter fw = new FileWriter("ObjectA.json");
+    		FileWriter fw = new FileWriter("ObjectB.json");
 
 //			fw.write(singleLineString(objE));
-			fw.write(prettifyString(objA));
+			fw.write(prettifyString(objB));
 			fw.close();
 			
 			Visualizer visualizer = new Visualizer();
-			String json_string = singleLineString(objA);
+			String json_string = singleLineString(objB);
 			
 			JsonReader json_reader = Json.createReader(new StringReader(json_string));
 			JsonObject json_object = json_reader.readObject();
