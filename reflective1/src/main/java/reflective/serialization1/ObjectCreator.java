@@ -9,7 +9,7 @@ import java.util.*;
 import javax.json.*;
 import javax.json.stream.JsonGenerator;
 
-public final class App {
+public final class ObjectCreator {
 
     public static void main(String[] args) {
     	
