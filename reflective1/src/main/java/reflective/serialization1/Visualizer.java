@@ -37,7 +37,7 @@ public class Visualizer {
     	System.out.println(tabDepth + String.format("Class: %s", c.getName()));
     	
     	// only inspect objects that have not yet been explored 
-    	if (!searchedObjects.containsKey(obj.hashCode()) || searchedObjects.get(obj.hashCode()) != c.getName()) {
+    	if (!searchedObjects.containsKey(obj.hashCode())) {
     		searchedObjects.put(obj.hashCode(), c.getName());
 	    	if (c.isArray()) {
 	    		inspectArray(c, obj, recursive, depth, searchedObjects);
@@ -47,11 +47,11 @@ public class Visualizer {
 		  
 		    	// print super class 
 		    	if(superClass != null) {
-//		    		if (!searchedObjects.containsKey(obj.hashCode())) {
+		    		if (!searchedObjects.containsKey(obj.hashCode())) {
 		    			System.out.println(tabDepth + "SUPERCLASS -> Recursively Inspect");
 		    			System.out.println(tabDepth + String.format("SuperClass: %s", superClass.getName()));
 		    			inspectClass(superClass, obj, recursive, depth+1, searchedObjects);
-//		    		}
+		    		}
 		    	}else {
 		    		System.out.println(tabDepth + "SuperClass: NONE");
 		    	}
