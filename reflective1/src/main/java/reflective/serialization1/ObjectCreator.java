@@ -163,11 +163,12 @@ public final class ObjectCreator {
     	}
     	// get Object that contains an ArrayList with references to other Objects
     	else if (userChar == 'e') {
-    		System.out.println(" This object has an ArrayList of primitive object references(option a). Set each index of the ArrayList. Enter 'd' when finished:");
+    		System.out.println(" This object has an ArrayList of object references. Set each index of the ArrayList. Enter 'd' when finished:");
     		subUserInput = "reset";
+    		subInput2 = " ";
     		
     		while(subUserInput.charAt(0) != 'd') {
-    			System.out.println(" Enter in the index. E.g. '1' to set 2nd index to Object A.");
+    			System.out.println(" Enter in the index. E.g. '1' to set 2nd index to Object A. Enter 'd' when finished");
     			subUserInput = subInput.nextLine();
     			
     			// end if user is done entering values 
@@ -178,7 +179,27 @@ public final class ObjectCreator {
 				if (tmpHolder < 0) {
 					System.out.println("Indecies can't be less than 0!\n");
 				}else {
-					objE.setArrayListIndex(tmpHolder, objA);
+					// select object
+			    	while(true) {
+			    		System.out.println("\nSelect an object to serialize by selection from the following options by entering the number in front them (e.g. 'a' or 'A'): \n");
+				    	System.out.println(" (a) A simple object with only primitives for instance variables");
+				    	System.out.println(" (b) An object that contains references to other objects");
+				    	
+				    	subInput2 = subInput.nextLine();
+				    	switch(Character.toLowerCase(subInput2.charAt(0))) {
+				    		case 'a':
+				    			objE.setArrayListIndex(tmpHolder, new ObjectA());
+				    			break;
+				    		case 'b':
+				    			objB.setObj(new ObjectB());
+				    			objE.setArrayListIndex(tmpHolder, objB);
+				    			break;
+				    		default:
+				    			System.out.println("Don't be a clown, follow the menu!\n");
+			    				continue;
+				    	}
+				    	break; // users input is correct
+			    	}
 				}
     		}
 
