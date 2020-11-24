@@ -167,9 +167,7 @@ public final class ObjectCreator {
 				}else {
 					// select object
 			    	while(true) {
-			    		System.out.println("\nSelect an object to serialize by selection from the following options by entering the number in front them (e.g. 'a' or 'A'): \n");
-				    	System.out.println(" (a) A simple object with only primitives for instance variables");
-				    	System.out.println(" (b) An object that contains references to other objects");
+			    		printObjectRefMenu();
 				    	
 				    	subInput2 = subInput.nextLine();
 				    	switch(Character.toLowerCase(subInput2.charAt(0))) {
@@ -218,9 +216,7 @@ public final class ObjectCreator {
 			}else {
 				// select object
 		    	while(true) {
-		    		System.out.println("\nSelect an object to serialize by selection from the following options by entering the number in front them (e.g. 'a' or 'A'): \n");
-			    	System.out.println(" (a) A simple object with only primitives for instance variables");
-			    	System.out.println(" (b) An object that contains references to other objects");
+		    		printObjectRefMenu();
 			    	
 			    	subInput2 = subInput.nextLine();
 			    	switch(Character.toLowerCase(subInput2.charAt(0))) {
@@ -243,6 +239,12 @@ public final class ObjectCreator {
 		subUserInput = ""; // reset 
 		System.out.println(prettifyString(objE) + "\n");
  		return singleLineString(objE);
+    }
+    
+    private static void printObjectRefMenu() {
+    	System.out.println("\nSelect an object to serialize by selection from the following options by entering the number in front them (e.g. 'a' or 'A'): \n");
+    	System.out.println(" (a) A simple object with only primitives for instance variables");
+    	System.out.println(" (b) An object that contains references to other objects");
     }
     
     // return serialized object 
