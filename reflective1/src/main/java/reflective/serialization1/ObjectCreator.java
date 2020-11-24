@@ -24,6 +24,7 @@ public final class ObjectCreator {
 		
     	Scanner subInput = new Scanner(System.in);
     	String subUserInput = "";
+    	String subInput2 = "";
     	int tmpHolder = 0;
     	
     	Boolean wrongInput = false;
@@ -111,12 +112,13 @@ public final class ObjectCreator {
     	}
     	// get Object that contains an array with references to other Objects
     	else if (userChar == 'd') {
-    		System.out.println(" This object has an array(length 5) of primitive object references(option a). Set each index of the array. Enter 'd' when finished:");
+    		System.out.println(" This object has an array(length 5) of Object references. Set each index of the array, to the object of your choosing. Enter 'd' when finished:");
     		
     		subUserInput = "reset";
+    		subInput2 = " ";
     		
     		while(subUserInput.charAt(0) != 'd') {
-    			System.out.println(" Enter in the index (e.g. '1' to set 2nd index to an Object A reference)");
+    			System.out.println(" Enter in the index (e.g. '1' to set 2nd index to an Object A reference). Enter 'd' when done");
     			subUserInput = subInput.nextLine();
     			
     			// error check user input
@@ -125,10 +127,32 @@ public final class ObjectCreator {
     				if (tmpHolder > 4 || tmpHolder < 0) {
     					System.out.println("Indecies can only be between 0-4!\n");
     				}else {
-    					objD.setArrayIndex(tmpHolder, objA);
+    					// select object
+    			    	while(true) {
+    			    		System.out.println("\nSelect an object to serialize by selection from the following options by entering the number in front them (e.g. 'a' or 'A'): \n");
+    				    	System.out.println(" (a) A simple object with only primitives for instance variables");
+    				    	System.out.println(" (b) An object that contains references to other objects");
+    				    	
+    				    	subInput2 = subInput.nextLine();
+    				    	switch(Character.toLowerCase(subInput2.charAt(0))) {
+    				    		case 'a':
+    				    			objD.setArrayIndex(tmpHolder, new ObjectA());
+    				    			break;
+    				    		case 'b':
+    				    			objB.setObj(new ObjectB());
+    				    			objB.setX(1);
+    				    			objD.setArrayIndex(tmpHolder, objB);
+    				    			break;
+    				    		default:
+    				    			System.out.println("Don't be a clown, follow the menu!\n");
+    			    				continue;
+    				    	}
+    				    	break; // users input is correct
+    			    	}
     				}
     			}catch (NumberFormatException e) {
     				System.out.println("Don't be a clown, enter in correct values (indecies -> integer)!\n");
+    				continue;
     			}
     		}
     		
