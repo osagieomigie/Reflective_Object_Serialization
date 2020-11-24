@@ -3,7 +3,7 @@ package reflective.serialization1;
 import java.util.ArrayList;
 
 public class ObjectE {
-private ArrayList<ObjectA> b = new ArrayList<>(3);
+private ArrayList<Object> b = new ArrayList<>(3);
 	
 	ObjectE() {
 		for(int i =0; i<3; i++) {
@@ -11,13 +11,13 @@ private ArrayList<ObjectA> b = new ArrayList<>(3);
 		}
 	}
 	
-	ObjectE(ObjectA firstArg, ObjectA secondArg, ObjectA thirdArg){
+	ObjectE(Object firstArg, Object secondArg, Object thirdArg){
 		b.add(firstArg);
 		b.add(secondArg);
 		b.add(thirdArg);
 	}
 	
-	public void setArrayListIndex(int index, ObjectA value) {
+	public void setArrayListIndex(int index, Object value) {
 		b.add(index, value); 
 	}
 	

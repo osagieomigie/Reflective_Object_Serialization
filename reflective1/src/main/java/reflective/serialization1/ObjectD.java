@@ -1,7 +1,7 @@
 package reflective.serialization1;
 
 public class ObjectD {
-private ObjectA[] b = new ObjectA[5];
+private Object[] b = new Object[5];
 	
 	ObjectD() {
 		for(int i =0; i<b.length; i++) {
@@ -9,7 +9,7 @@ private ObjectA[] b = new ObjectA[5];
 		}
 	}
 	
-	ObjectD(ObjectA firstArg, ObjectA secondArg, ObjectA thirdArg, ObjectA fourthArg, ObjectA lastArg){
+	ObjectD(Object firstArg, Object secondArg, Object thirdArg, Object fourthArg, Object lastArg){
 		b[0] = firstArg;
 		b[1] = secondArg;
 		b[2] = thirdArg;
@@ -17,7 +17,7 @@ private ObjectA[] b = new ObjectA[5];
 		b[4] = lastArg;
 	}
 	
-	public void setArrayIndex(int index, ObjectA value) {
+	public void setArrayIndex(int index, Object value) {
 		b[index] = value;
 	}
 	
