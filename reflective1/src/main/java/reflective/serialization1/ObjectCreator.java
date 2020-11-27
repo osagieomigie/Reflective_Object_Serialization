@@ -8,6 +8,19 @@ import java.util.*;
 
 import javax.json.*;
 import javax.json.stream.JsonGenerator;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+
+import serialization_xml.Serializer_XML;
+import serialization_xml.Deserializer_XML;
 
 public final class ObjectCreator {
 	
@@ -27,7 +40,7 @@ public final class ObjectCreator {
 	
 	private static Boolean wrongInput = false;
 	
-    public static String createObject(char userChar) {
+    public static String createObject(char userChar, char type) {
     	
     	// create new object per request
     	objA = new ObjectA();
@@ -39,37 +52,69 @@ public final class ObjectCreator {
 	    	 
     	// get object with primitive fields 
     	if (userChar == 'a') {
-    		System.out.println("This object has 3 fields (x, y, z). Set their value with the following prompts: ");
-    		wrongInput = false; // reset wrong input value
+    		ObjectA tmpA = createPrimitiveObject();
     		
-    		return createPrimitiveObject();
+    		// user wants to serialize xml string 
+    		if (type == 'x') {
+    			System.out.println(prettifyXMLString(tmpA) + "\n");
+    			return singleLineXMLString(tmpA);
+    		}
+    		
+    		System.out.println(prettifyString(tmpA) + "\n");
+    		return singleLineString(tmpA);
     	}
     	// get circularly referenced object
     	else if (userChar == 'b') {
-    		System.out.println(" This object references it self (2 objects). Each object has an 'x' variable. Set their variables with the following prompts:");
-    		wrongInput = false; // reset wrong input value
+    		ObjectB tmpb = createCircularRefObject();
     		
-    		return createCircularRefObject();
+    		// user wants to serialize xml string 
+    		if (type == 'x') {
+    			System.out.println(prettifyXMLString(tmpb) + "\n");
+    			return singleLineXMLString(tmpb);
+    		}
+    		
+    		System.out.println(prettifyString(tmpb) + "\n");
+    		return singleLineString(tmpb);
     	}
     	
     	// get object that contains an array of primitives
-    	else if (userChar == 'c') {
-    		wrongInput = false; // reset wrong input value
-    		System.out.println(" This object has an array of Integers. Set each index of the array:");
+    	else if (userChar == 'c') {    		
+    		ObjectC tmpC = createPrimitiveArray();
     		
-    		return createPrimitiveArray();
+    		// user wants to serialize xml string 
+    		if (type == 'x') {
+    			System.out.println(prettifyXMLString(tmpC) + "\n");
+    			return singleLineXMLString(tmpC);
+    		}
+    		
+    		System.out.println(prettifyString(tmpC) + "\n");
+    		return singleLineString(tmpC);
     	}
     	// get Object that contains an array with references to other Objects
     	else if (userChar == 'd') {
-    		System.out.println(" This object has an array(length 5) of Object references. Set each index of the array, to the object of your choosing. Enter 'd' when finished:");
+    		ObjectD tmpD = createObjectRefArray();
     		
-    		return createObjectRefArray();
+    		// user wants to serialize xml string 
+    		if (type == 'x') {
+    			System.out.println(prettifyXMLString(tmpD) + "\n");
+    			return singleLineXMLString(tmpD);
+    		}
+    		
+    		System.out.println(prettifyString(tmpD) + "\n");
+    		return singleLineString(tmpD);
     	}
     	// get Object that contains an ArrayList with references to other Objects
     	else if (userChar == 'e') {
-    		System.out.println(" This object has an ArrayList of object references. Set each index of the ArrayList. Enter 'd' when finished:");
+    		ObjectE tmpE = createObjectRefArrayList();
     		
-    		return createObjectRefArrayList();
+    		// user wants to serialize xml string 
+    		if (type == 'x') {
+    			System.out.println(prettifyXMLString(tmpE) + "\n");
+    			return singleLineXMLString(tmpE);
+    		}
+    		
+    		System.out.println(prettifyString(tmpE) + "\n");
+     		return singleLineString(tmpE);
     	}
     	
     	// invalid user input 
@@ -80,7 +125,9 @@ public final class ObjectCreator {
     }
     
     // return serialized primitive object 
-    private static String createPrimitiveObject() {
+    private static ObjectA createPrimitiveObject() {
+    	System.out.println("This object has 3 fields (x, y, z). Set their value with the following prompts: ");
+		wrongInput = false; // reset wrong input value
     	while (!wrongInput) {
     		try {
     			System.out.println(" x is a type integer, enter in an Integer value for x:");
@@ -100,12 +147,13 @@ public final class ObjectCreator {
         	}
 		}
 		
-		System.out.println(prettifyString(objA) + "\n");
-		return singleLineString(objA);
+		return objA;
     }
     
     // return serialized circular referenced object
-    private static String createCircularRefObject() {
+    private static ObjectB createCircularRefObject() {
+		System.out.println(" This object references it self (2 objects). Each object has an 'x' variable. Set their variables with the following prompts:");
+		wrongInput = false; // reset wrong input value
     	while (!wrongInput) {
     		try {
     			System.out.println(" Set the 'x' field of the first object; enter in an Integer value for x:");
@@ -122,14 +170,16 @@ public final class ObjectCreator {
         	}
 		}
 		
-		objB2.setObj(objB);
+    	objB2.setObj(objB);
 		objB.setObj(objB2);
-		System.out.println(prettifyString(objB) + "\n");
-		return singleLineString(objB);
+		return objB;
     }
     
     // return serialized primitive array
-    private static String createPrimitiveArray() {
+    private static ObjectC createPrimitiveArray() {
+		wrongInput = false; // reset wrong input value
+		System.out.println(" This object has an array of Integers. Set each index of the array:");
+		
     	while (!wrongInput) {
     		for (int i = 0; i < 5; i++) {
     			System.out.println(String.format(" Set the %d index of the array. Enter in an integer value:", i));
@@ -146,12 +196,12 @@ public final class ObjectCreator {
     		}
 		}
 		
-		System.out.println(prettifyString(objC) + "\n");
-		return singleLineString(objC);
+		return objC;
     }
     
     // return serialized array with object references
-    private static String createObjectRefArray() {
+    private static ObjectD createObjectRefArray() {
+    	System.out.println(" This object has an array(length 5) of Object references. Set each index of the array, to the object of your choosing. Enter 'd' when finished:");
     	subUserInput = "reset";
 		subInput2 = " ";
 		
@@ -172,12 +222,12 @@ public final class ObjectCreator {
 				    	subInput2 = subInput.nextLine();
 				    	switch(Character.toLowerCase(subInput2.charAt(0))) {
 				    		case 'a':
-				    			objD.setArrayIndex(tmpHolder, new ObjectA());
+				    			objD.setArrayIndex(tmpHolder, createPrimitiveObject());
 				    			break;
 				    		case 'b':
-				    			objB.setObj(new ObjectB());
-				    			objB.setX(1);
-				    			objD.setArrayIndex(tmpHolder, objB);
+//				    			objB.setObj(new ObjectB());
+//				    			objB.setX(1);
+				    			objD.setArrayIndex(tmpHolder, createCircularRefObject());
 				    			break;
 				    		default:
 				    			System.out.println("Don't be a clown, follow the menu!\n");
@@ -193,12 +243,12 @@ public final class ObjectCreator {
 		}
 		
 		subUserInput = ""; // reset 
-		System.out.println(prettifyString(objD) + "\n");
-		return singleLineString(objD);
+		return objD;
     }
     
     // return serialized ArrayList with object reference
-    private static String createObjectRefArrayList() {
+    private static ObjectE createObjectRefArrayList() {
+		System.out.println(" This object has an ArrayList of object references. Set each index of the ArrayList. Enter 'd' when finished:");
     	subUserInput = "reset";
 		subInput2 = " ";
 		
@@ -221,11 +271,11 @@ public final class ObjectCreator {
 			    	subInput2 = subInput.nextLine();
 			    	switch(Character.toLowerCase(subInput2.charAt(0))) {
 			    		case 'a':
-			    			objE.setArrayListIndex(tmpHolder, new ObjectA());
+			    			objE.setArrayListIndex(tmpHolder, createPrimitiveObject());
 			    			break;
 			    		case 'b':
-			    			objB.setObj(new ObjectB());
-			    			objE.setArrayListIndex(tmpHolder, objB);
+			    			//objB.setObj(new ObjectB());
+			    			objE.setArrayListIndex(tmpHolder, createCircularRefObject());
 			    			break;
 			    		default:
 			    			System.out.println("Don't be a clown, follow the menu!\n");
@@ -237,8 +287,7 @@ public final class ObjectCreator {
 		}
 
 		subUserInput = ""; // reset 
-		System.out.println(prettifyString(objE) + "\n");
- 		return singleLineString(objE);
+		return objE;
     }
     
     private static void printObjectRefMenu() {
@@ -278,4 +327,42 @@ public final class ObjectCreator {
     	
     	return prettyPrint;
     }
+    
+    // return serialized object 
+    public static String singleLineXMLString(Object obj) {
+    	Document document;
+    	StringWriter writer = new StringWriter();
+		try {
+			document = Serializer_XML.serializeObject(obj);
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	        Transformer transformer = transformerFactory.newTransformer();
+	        DOMSource dom_source = new DOMSource(document);
+	       
+	        StreamResult stream_result = new StreamResult(writer);
+	        transformer.transform(dom_source, stream_result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+        return writer.toString();
+    }
+    
+    // return serialized object 
+    public static String prettifyXMLString(Object obj) {
+    	Document document = null;
+    	try {
+			document = Serializer_XML.serializeObject(obj);
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	        Transformer transformer = transformerFactory.newTransformer();
+	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+	        DOMSource domSource = new DOMSource(document);
+	        StreamResult result = new StreamResult(new StringWriter());
+	        transformer.transform(domSource, result);
+	        return result.getWriter().toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 }
