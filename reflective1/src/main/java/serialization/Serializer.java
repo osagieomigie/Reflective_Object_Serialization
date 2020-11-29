@@ -1,3 +1,5 @@
+package serialization;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.IdentityHashMap;
@@ -93,8 +95,8 @@ public class Serializer {
         Class object_class = obj.getClass();
         JsonObjectBuilder object_info = Json.createObjectBuilder();
         
-        object_info.add("class", object_class.getName());
-        object_info.add("id", object_id);   // stops at object id   
+        object_info.add("class", object_class.getName()); // add class name
+        object_info.add("id", object_id);   // add object id   
         object_info.add("type", "array"); // add type
 
     	// add array length

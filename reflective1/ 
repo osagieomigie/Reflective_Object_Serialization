@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<serialized>
+  <object class="reflective.serialization1.ObjectA" id="0" type="object">
+    <field declaringClass="reflective.serialization1.ObjectA" name="x">
+      <value value="1"/>
+    </field>
+    <field declaringClass="reflective.serialization1.ObjectA" name="y">
+      <value value="3"/>
+    </field>
+    <field declaringClass="reflective.serialization1.ObjectA" name="z">
+      <value value="1.0"/>
+    </field>
+  </object>
+</serialized>

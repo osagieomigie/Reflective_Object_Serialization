@@ -23,7 +23,6 @@ public class Deserializer_XML {
     private static void createInstances(Map object_tracking_map, NodeList object_list) throws Exception {
         
     	for (int i = 0; i < object_list.getLength(); i++) {
-            //JsonObject object_info = object_list.getJsonObject(i);
     		Node object_node = object_list.item(i);
 
             Object object_instance = null;
@@ -52,7 +51,6 @@ public class Deserializer_XML {
     private static void assignFieldValues(Map object_tracking_map, NodeList object_list) throws Exception {
     	
     	for (int i = 0; i < object_list.getLength(); i++) {
-    		//JsonObject object_info = object_list.getJsonObject(i);
     		Node object_node = object_list.item(i);
     		
     		if (object_node instanceof Element) {
@@ -80,7 +78,6 @@ public class Deserializer_XML {
                 }else {
 	                // get fields 
 	        		for (int j = 0; j < object_node.getChildNodes().getLength(); j++) {
-	        			//JsonObject field_info = object_fields.getJsonObject(j);
 	        			Node child_node = object_node.getChildNodes().item(j);
 	        			Element field_info = (Element) child_node;
 	        			

@@ -1,10 +1,12 @@
+package serialization;
+
 import java.lang.reflect.*;
 import java.util.*;
 import javax.json.*;
 
 /**
  * CPSC 501 
- * Incomplete JSON deserializer
+ * JSON deserializer
  *
  * @author Jonathan Hudson, Osa Omigie 
  */

@@ -225,8 +225,6 @@ public final class ObjectCreator {
 				    			objD.setArrayIndex(tmpHolder, createPrimitiveObject());
 				    			break;
 				    		case 'b':
-//				    			objB.setObj(new ObjectB());
-//				    			objB.setX(1);
 				    			objD.setArrayIndex(tmpHolder, createCircularRefObject());
 				    			break;
 				    		default:

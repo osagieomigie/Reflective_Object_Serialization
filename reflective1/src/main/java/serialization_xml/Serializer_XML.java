@@ -26,8 +26,8 @@ public class Serializer_XML {
 	        Class object_class = source.getClass();
 	        Element object_info = document.createElement("object");
 	        
-	        object_info.setAttribute("class", object_class.getName());  //.add("class", object_class.getName());
-	        object_info.setAttribute("id", object_id);  //.add("id", object_id);
+	        object_info.setAttribute("class", object_class.getName());
+	        object_info.setAttribute("id", object_id);
 	        
 	        Field [] requiredFields = null;
 	        
@@ -42,35 +42,29 @@ public class Serializer_XML {
 	        }
 	        
 	        // list of fields 
-	        //JsonArrayBuilder field_list = Json.createArrayBuilder();
 	        for (Field f : requiredFields) {
 	        	f.setAccessible(true);
 	        	
 	        	// list of field info
-	        	//JsonObjectBuilder field_info = Json.createObjectBuilder();
 	        	Element field = document.createElement("field");
 	        	
 	            Class fieldDeclareClass = f.getDeclaringClass(); // field declaring class 
 	            Object field_obj = f.get(source); // get field value 
 	            
-	            //object_info.add("type", "object"); // field type
-	                        
-	        	//field_info.add("name", f.getName()); // field name 
 	            field.setAttribute("name", f.getName());
-	        	//field_info.add("declaringClass", fieldDeclareClass.getName()); // field declaring class name 
-	            field.setAttribute("declaringClass", fieldDeclareClass.getName());
+	            field.setAttribute("declaringClass", fieldDeclareClass.getName());// field declaring class name
 	            Element value = document.createElement("value");
 	            Element reference = document.createElement("reference");
 	        	
 	        	// determine field type 
 	        	if (f.getType().isPrimitive()) {
-	        		//field_info.add("value", field_obj.toString()); // primitive field 
+	        		// primitive field 
 	        		value.appendChild(document.createTextNode(field_obj.toString()));
 	        		field.appendChild(value);
 	        		object_info.appendChild(field);
 	        	}else {// object field 
 	        		if (field_obj == null) {
-	        			//field_info.add("reference", "null"); // null object
+	        			// null object
 	        			reference.appendChild(document.createTextNode("null"));
 		        		field.appendChild(reference);
 		        		object_info.appendChild(field);
@@ -80,56 +74,44 @@ public class Serializer_XML {
 	        	        // add array to map 
 	        			String array_id = Integer.toString(object_tracking_map.size());
 	        	        object_tracking_map.put(field_obj, array_id);
-	        	        //field_info.add("reference", array_id);
 	        	        reference.appendChild(document.createTextNode(array_id));
 		        		field.appendChild(reference);
 		        		object_info.appendChild(field);
-	        	        //object_info = serializeArray(field_obj.getClass(), array_id, field_obj, document, object_tracking_map);
 	        	        document.getDocumentElement().appendChild(serializeArray(field_obj.getClass(), array_id, field_obj, document, object_tracking_map));
 	        		}
 	        		// Field is an Object 
 	        		else {
 	        			if (!object_tracking_map.containsKey(field_obj)) { // add new object to tracking list 
-	        				//field_info.add("reference", Integer.toString(object_tracking_map.size()));
 	        				reference.appendChild(document.createTextNode(Integer.toString(object_tracking_map.size())));
 			        		field.appendChild(reference);
 			        		object_info.appendChild(field);
 	        				serializeHelper(field_obj, document, object_tracking_map);
 	        			}else {
-	        				//field_info.add("reference", object_tracking_map.get(field_obj).toString());
 	        				reference.appendChild(document.createTextNode(object_tracking_map.get(field_obj).toString()));
 			        		field.appendChild(reference);
 			        		object_info.appendChild(field);
 	        			}
 	        		}
 	        	}
-	        	
-	        	//field_list.add(field_info);
 	        }
-	        
-	        // add fields
-	        //object_info.add("fields", field_list);
 	        
 	        document.getDocumentElement().appendChild(object_info);
 	        return document;
-	        //object_list.add(object_info);
 	    }
 	    
 	    private static Element serializeArray(Class<?> c, String object_id, Object obj, Document document, Map object_tracking_map) {
 	    	
 	        Class object_class = obj.getClass();
-	        //JsonObjectBuilder object_info = Json.createObjectBuilder();
 	        Element object_info = document.createElement("object");
 	        
-	        object_info.setAttribute("class", object_class.getName());  //.add("class", object_class.getName()); // add class name
-	        object_info.setAttribute("id", object_id);  //.add("id", object_id);   // add object id   
-	        object_info.setAttribute("type", "array");  //.add("type", "array"); // add type
+	        object_info.setAttribute("class", object_class.getName()); // add class name
+	        object_info.setAttribute("id", object_id);// add object id   
+	        object_info.setAttribute("type", "array"); // add type
 
 	    	// add array length
 	    	int arrLength = Array.getLength(obj);
-	    	object_info.setAttribute("length", String.valueOf(arrLength));  //.add("length", String.valueOf(arrLength));
+	    	object_info.setAttribute("length", String.valueOf(arrLength));  // add array length
 	    	
-	    	//JsonArrayBuilder array_list = Json.createArrayBuilder();  
 	    	// inspect array elements
 	    	for (int i = 0; i < arrLength; i++) {
 	    		Element value = document.createElement("value");
@@ -138,13 +120,11 @@ public class Serializer_XML {
 	    		if(arrValue != null) {
 	    			// primitive object
 	    			if (c.getComponentType().isPrimitive()) {
-	    				//array_info.add("value", arrValue.toString());
 	    				value.appendChild(document.createTextNode(arrValue.toString()));
 	    				object_info.appendChild(value);
 	    			}
 	    			// class object
 	    			else {
-	    				//array_info.add("reference", Integer.toString(object_tracking_map.size()));
 	    				reference.appendChild(document.createTextNode(Integer.toString(object_tracking_map.size())));
 	    				object_info.appendChild(reference);
 	    				// serialize class object
@@ -155,17 +135,10 @@ public class Serializer_XML {
 						}
 	    			}	
 	    		}else {
-	    			//array_info.add("value", "null");
 	    			value.appendChild(document.createTextNode("null"));
     				object_info.appendChild(value);
 	    		}
-	    		
-	    		//array_list.add(array_info);
 	    	}
-	    	
-	    	// add entries
-	        //object_info.add("entries", array_list);
-//	    	document.getDocumentElement().appendChild(object_info);
-	    	return object_info;
+	    	return object_info; // return serialized array
 	    }
 }

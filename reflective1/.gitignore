@@ -26,3 +26,9 @@ buildNumber.properties
 .factorypath
 .project
 .vscode/
+
+# output 
+Object*.json
+
+#mac 
+.DS_Store 

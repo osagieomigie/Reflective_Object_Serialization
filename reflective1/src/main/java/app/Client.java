@@ -1,3 +1,5 @@
+package app;
+
 import java.io.*;
 import java.net.*;
 import javax.json.*;
@@ -13,7 +15,7 @@ import serialization_xml.Deserializer_XML;
 
 public class Client {
 	
-	private static final String SERVER_IP = "127.0.0.1"; //"127.0.0.1"; UC server 136.159.5.27
+	private static final String SERVER_IP = "136.159.5.27"; //"127.0.0.1"; UC server 136.159.5.27
 	private static final int SERVER_PORT = 8080; 
 	
 	public static void main(String [] args) throws UnknownHostException, IOException {
@@ -41,8 +43,7 @@ public class Client {
 			JsonReader json_serialized_reader = Json.createReader(new StringReader(serverResponse));
 			JsonObject json_serialized_object = json_serialized_reader.readObject();
 			
-			//System.out.println(serverResponse);
-			// get need string type and the serialized string from the response 
+			// get serialization type and the serialized string from the response 
 			stringType = json_serialized_object.getString("string_type");
 			serializedObject = json_serialized_object.getString("serialized_string");
 			System.out.println(serializedObject);
